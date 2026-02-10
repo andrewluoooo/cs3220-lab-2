@@ -1,0 +1,46 @@
+# Compilation outputs - Verilator
+obj_dir/
+*.o
+*.d
+*.mk
+Vpipeline
+Vpipeline__*
+*.exe
+
+# Compilation outputs - General C/C++
+*.out
+*.a
+*.so
+*.dylib
+
+# Compilation outputs - Verilog/SystemVerilog
+*.vvp
+*.lxt
+*.vcd
+*.vpd
+*.fsdb
+
+# Compilation outputs - Assembly/Object files
+*.elf
+*.hex
+*.bin
+*.dump
+*.dec
+
+# Log files
+*.log
+logs/
+*.txt.log
+
+# Temporary files
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build directories
+build/
+dist/
+
+# Submission artifacts
+submission.zip
