@@ -24,10 +24,12 @@ module DE_STAGE(
   
   /* decode signals */
   wire valid_DE;
-  wire [`INSTBITS-1:0] inst_DE; 
+  wire [`INSTBITS-1:0] inst_DE;
   wire [`DBITS-1:0] PC_DE;
-  wire [`DBITS-1:0] pcplus_DE; 
-  wire [`DBITS-1:0] inst_count_DE; 
+  wire [`DBITS-1:0] pcplus_DE;
+  wire [`DBITS-1:0] predicted_next_pc_DE;
+  wire [7:0] pht_index_DE;
+  wire [`DBITS-1:0] inst_count_DE;
   wire[`DE_latch_WIDTH-1:0] DE_latch_contents; 
 
  
@@ -332,30 +334,33 @@ end
     end
   end
 
-// decoding the contents of FE latch out. the order should be matched with the fe_stage.v 
+// decoding the contents of FE latch out. the order should be matched with the fe_stage.v
   assign {
             valid_DE,
             inst_DE,
-            PC_DE, 
+            PC_DE,
             pcplus_DE,
-            inst_count_DE 
-            }  = from_FE_latch;  // based on the contents of the latch, you can decode the content 
+            predicted_next_pc_DE,
+            pht_index_DE,
+            inst_count_DE
+            }  = from_FE_latch; 
 
 
 // assign wire to send the contents of DE latch to other pipeline stages  
   assign DE_latch_out = DE_latch; 
 
    assign DE_latch_contents = {
-                                  valid_DE, 
+                                  valid_DE,
                                   inst_DE,
                                   PC_DE,
                                   pcplus_DE,
                                   op_I_DE,
                                   inst_count_DE,
-                                  // more signals might need
                                   rs1_val_DE,
-                                  rs2_val_DE,    
+                                  rs2_val_DE,
                                   sxt_imm_DE,
+                                  predicted_next_pc_DE,
+                                  pht_index_DE,
                                   is_br_DE,
                                   is_jmp_DE,
                                   rd_mem_DE,
