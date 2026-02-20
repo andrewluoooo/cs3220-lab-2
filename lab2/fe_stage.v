@@ -161,10 +161,10 @@ module FE_STAGE(
       BHR <= 8'b0;
       BTB_valid <= 16'b0;
       for (i = 0; i < 256; i = i + 1)
-        PHT[i] <= 2'b01;  // weakly not taken
+        PHT[i] = 2'b01;  // weakly not taken (blocking: Verilator BLKLOOPINIT)
       for (i = 0; i < 16; i = i + 1) begin
-        BTB_tag[i] <= 26'b0;
-        BTB_target[i] <= 32'b0;
+        BTB_tag[i] = 26'b0;
+        BTB_target[i] = 32'b0;
       end
     end else begin
       if (is_br_or_jmp_AGEX) begin
