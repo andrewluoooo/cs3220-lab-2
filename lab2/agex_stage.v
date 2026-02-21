@@ -187,4 +187,21 @@ module AGEX_STAGE(
     br_mispred_AGEX
   };
 
+  // Branch prediction accuracy counters (Part 2)
+  reg [31:0] total_branches /* verilator public */;
+  reg [31:0] correct_predictions /* verilator public */;
+
+  always @ (posedge clk) begin
+    if (reset) begin
+      total_branches <= 32'b0;
+      correct_predictions <= 32'b0;
+    end else begin
+      if (is_br_or_jmp_AGEX) begin
+        total_branches <= total_branches + 1;
+        if (!br_mispred_AGEX)
+          correct_predictions <= correct_predictions + 1;
+      end
+    end
+  end
+
 endmodule

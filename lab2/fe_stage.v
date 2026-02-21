@@ -48,10 +48,6 @@ module FE_STAGE(
   // This is the value of "incremented PC", computed in the FE stage
   assign pcplus_FE = PC_FE_latch + `INSTSIZE;
 
-  // =============================================
-  // Branch Predictor: PHT, BTB, BHR
-  // =============================================
-
   // Branch History Register (8-bit)
   reg [7:0] BHR;
 
@@ -78,9 +74,6 @@ module FE_STAGE(
   assign pht_predict_taken_FE = (pht_counter_FE >= 2'd2);
   assign predicted_next_pc_FE = (btb_hit_FE && pht_predict_taken_FE) ? BTB_target[btb_index_FE] : pcplus_FE;
 
-  // =============================================
-  // FE latch contents (must match DE stage unpacking)
-  // =============================================
   assign FE_latch_contents = {
                                 valid_FE,
                                 inst_FE,
@@ -91,9 +84,6 @@ module FE_STAGE(
                                 inst_count_FE
                                 };
 
-  // =============================================
-  // Signals from other stages
-  // =============================================
   wire br_mispred_AGEX;
   wire is_br_or_jmp_AGEX;
   wire actual_taken_AGEX;
@@ -118,9 +108,6 @@ module FE_STAGE(
   wire [`DBITS-1:0] correct_redirect_pc;
   assign correct_redirect_pc = actual_taken_AGEX ? computed_target_AGEX : (PC_AGEX + `INSTSIZE);
 
-  // =============================================
-  // PC update logic
-  // =============================================
   always @ (posedge clk) begin
    if (reset) begin
       PC_FE_latch <= `STARTPC;
@@ -136,9 +123,6 @@ module FE_STAGE(
       end
   end
 
-  // =============================================
-  // FE latch update
-  // =============================================
   always @ (posedge clk) begin
     if (reset) begin
       FE_latch <= '0;
@@ -152,9 +136,6 @@ module FE_STAGE(
     end
   end
 
-  // =============================================
-  // BTB, PHT, BHR update (from AGEX stage)
-  // =============================================
   integer i;
   always @ (posedge clk) begin
     if (reset) begin

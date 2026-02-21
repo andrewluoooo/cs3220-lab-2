@@ -95,6 +95,15 @@ int main(int argc, char** argv, char** env) {
     std::cout << "Total instructions=" << std::dec << inst_count_WB << ", cycles=" << (timestamp_WB / 2) << ", IPC=" << ((inst_count_WB * 2.0f) / timestamp_WB) << std::endl; 
 #endif
 
+    // Print branch prediction accuracy (Part 2)
+    {
+        uint32_t total_br = (uint32_t)dut->pipeline->my_AGEX_stage->total_branches;
+        uint32_t correct_br = (uint32_t)dut->pipeline->my_AGEX_stage->correct_predictions;
+        if (total_br > 0) {
+            std::cout << "Accuracy=" << std::dec << (correct_br * 100 / total_br) << "%" << std::endl;
+        }
+    }
+
     int exitcode = (int)dut->pipeline->my_WB_stage->last_WB_value[3];
 
     // Final model cleanup
